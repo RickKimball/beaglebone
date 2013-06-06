@@ -1,10 +1,9 @@
 /*
+ * File: BB-WS2811-SPI0-00A0.dts
  *
- * Device tree overlay for a graphical LCD used on the Nokia 3330
+ * Device tree overlay to configure SPI to drive a WS2811 led strip with SPI0
  *
- * It is connected on SPI0 (SPI1 pins are used by HDMI cape on BBB)
- *
- * It uses two additional GPIO, 1 for reset and 1 for command / data switch
+ * Uses SPI0 as SPI1 pins are used by HDMI cape on BBB
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -17,10 +16,17 @@
 /*
  * Pin assignments
  *
- * LCD               Connector
- * 
- * 2 SPI CLK  <--   P9.22 SPI0_CLK
- * 3 SPI MOSI <--   P9.18 SPI0_D1
+ * BBB Header    ->  WS2811 led strip
+ * P9.18 SPI0_D1 ->  DIN
+ * GND           ->  GND
+ * +5V           ->  +5V
+ *
+ * Deploy on BBB:
+ *
+ * # dtc -O dtb -o BB-WS2811-SPI0-00A0.dtbo -b 0 -@ BB-WS2811-SPI0-00A0.dts
+ * # cp BB-WS2811-SPI0-00A0.dtbo /lib/firmware/
+ * # echo BB-WS2811-SPI0  >/sys/devices/bone_capemgr.*/slots
+ * # cat /sys/devices/bone_capemgr.*/slots
  *
  */
 
