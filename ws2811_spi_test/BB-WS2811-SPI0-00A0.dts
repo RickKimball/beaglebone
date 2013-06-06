@@ -1,0 +1,69 @@
+/*
+ *
+ * Device tree overlay for a graphical LCD used on the Nokia 3330
+ *
+ * It is connected on SPI0 (SPI1 pins are used by HDMI cape on BBB)
+ *
+ * It uses two additional GPIO, 1 for reset and 1 for command / data switch
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+/dts-v1/;
+/plugin/;
+
+/*
+ * Pin assignments
+ *
+ * LCD               Connector
+ * 
+ * 2 SPI CLK  <--   P9.22 SPI0_CLK
+ * 3 SPI MOSI <--   P9.18 SPI0_D1
+ *
+ */
+
+/ {
+
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+  part-number = "BB-BONE-WS2811-SPI0";
+
+  version = "00A0";
+
+  exclusive-use = "P9.18", "P9.22", "spi0";
+
+  fragment@0 {
+    target = <&am33xx_pinmux>;
+    __overlay__ {
+    spi0_pinmux: spi0_pins  {
+        pinctrl-single,pins = <
+          0x150 0x20  /* spi0_sclk, FAST | INPUT_PULLDOWN  | MODE1 , P9.22 */
+          0x158 0x00  /* spi0_d1,   FAST | OUTPUT_PULLDOWN | MODE1 , P9.18 */
+          >;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&spi0>;
+    __overlay__ {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      status = "okay";
+      pinctrl-names = "default";
+      pinctrl-0 = <&spi0_pinmux>;
+
+      /* MODE 1 (CPOL=0,CPHA=1) */
+      ws2811_spi1_0 {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        compatible = "spidev";
+        reg = <0>;
+        spi-max-frequency = <12000000>;
+        spi-cpha;
+      };
+    };
+  };
+};
