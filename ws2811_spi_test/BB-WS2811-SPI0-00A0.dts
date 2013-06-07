@@ -25,8 +25,8 @@
  *
  * # dtc -O dtb -o BB-WS2811-SPI0-00A0.dtbo -b 0 -@ BB-WS2811-SPI0-00A0.dts
  * # cp BB-WS2811-SPI0-00A0.dtbo /lib/firmware/
- * # echo BB-WS2811-SPI0  >/sys/devices/bone_capemgr.*/slots
- * # cat /sys/devices/bone_capemgr.*/slots
+ * # echo BB-WS2811-SPI0  >/sys/devices/bone_capemgr.9/slots
+ * # cat /sys/devices/bone_capemgr.9/slots
  *
  */
 
